@@ -67,9 +67,11 @@ export const setupContracts = async ({ onError, onRefresh }) => {
   const signer = await defaultProvider.getSigner();
   const webId = await signer.getChainId();
   if (webId !== FANTOM_ID) {
-    onError("Please, switch networks to use Fantom");
-    await window.ethereum.request(FANTOM_NETWORK);
-    onRefresh(true);
+    const confirmation = onError("Please, switch networks to use Fantom");
+    if (confirmation) {
+      await window.ethereum.request(FANTOM_NETWORK);
+      onRefresh(true);
+    }
   } else {
     const accounts = await signer.getAddress();
     const rarityContract = new Contract(RARITY_ADDRESS, RARITY_ABI, signer);

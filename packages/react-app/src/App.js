@@ -25,7 +25,7 @@ function App() {
     try {
       if (window.ethereum) {
         const contracts = await setupContracts({
-          onError: () => alert("Please, switch to Fantom network"),
+          onError: (message) => window.confirm(message),
           onRefresh: () => setRefresh(!refresh),
         });
         console.log("contract", contracts);

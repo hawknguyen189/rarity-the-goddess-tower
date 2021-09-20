@@ -19,7 +19,7 @@ const useAttribute = () => {
         wisdom: 8,
         charisma: 8,
       };
-      if (contract.contractAttributes) {
+      if (contract?.contractAttributes) {
         const retryToCompletion = async ({ wait, retries }) => {
           const onError = (err) => {
             retries = retries - 1;
@@ -56,7 +56,7 @@ const useAttribute = () => {
       }
       return data;
     },
-    [contract.contractAttributes]
+    [contract?.contractAttributes]
   );
 
   const calcAP = useCallback(
@@ -88,7 +88,7 @@ const useAttribute = () => {
         return 0;
       }
     },
-    [contract.contractAttributes]
+    [contract?.contractAttributes]
   );
 
   const pointBuy = useCallback(
@@ -109,7 +109,7 @@ const useAttribute = () => {
         return;
       }
     },
-    [contract.contractAttributes]
+    [contract?.contractAttributes]
   );
 
   const characterCreated = useCallback(
@@ -120,7 +120,7 @@ const useAttribute = () => {
         return false;
       }
     },
-    [contract.contractAttributes]
+    [contract?.contractAttributes]
   );
   return { getAbilityScores, calcAP, pointBuy, characterCreated };
 };

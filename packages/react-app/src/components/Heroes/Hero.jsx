@@ -98,7 +98,7 @@ const Hero = ({ tokenID, animation }) => {
       fetchGold();
     }
     return () => {};
-  }, [tokenID, contract.accounts]);
+  }, [tokenID, contract]);
 
   return (
     <div className="row">
