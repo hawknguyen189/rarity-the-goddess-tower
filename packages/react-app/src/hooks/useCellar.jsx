@@ -55,7 +55,7 @@ const useCellar = () => {
       }
       return data;
     },
-    [contract.cellarContract]
+    [contract?.cellarContract]
   );
   const singleCellar = async (summonerID) => {
     try {

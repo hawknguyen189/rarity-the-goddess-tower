@@ -253,8 +253,8 @@ const HeroController = ({
                     )
                   ) : (
                     <span
-                      class="d-inline-block text-capitalize px-0"
-                      tabindex="0"
+                      className="d-inline-block text-capitalize px-0"
+                      tabIndex="0"
                       data-bs-toggle="tooltip"
                       title="only added stats summoners can go to dungeon"
                     >
