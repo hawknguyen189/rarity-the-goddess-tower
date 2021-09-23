@@ -3,12 +3,12 @@ import useRarity from "../../hooks/useRarity";
 import useGold from "../../hooks/useGold";
 import { Link } from "react-router-dom";
 import { ContractContext } from "../Context/ContractContext.jsx";
-
-// import { CharacterContext } from "../Context/CharacterContext";
-// import { ContractContext } from "../Context/ContractContext";
+import { CharacterContext } from "../Context/CharacterContext";
 
 const Hero = ({ tokenID, animation }) => {
   const { contract } = useContext(ContractContext);
+  const { setHeroes } = useContext(CharacterContext);
+
   const [element, setElement] = useState({
     tokenID: null,
     class: null,
@@ -24,17 +24,18 @@ const Hero = ({ tokenID, animation }) => {
   //all functions related to gold address
   const { getClaimableGold, getGoldBalance, claimGold } = useGold();
 
-  // const { heroes, setHeroes } = useContext(CharacterContext);
   const handleAdventure = async () => {
     // need to use tokenID.id || tokenID in case we use adv all and push for a re-render
-    const response = await embarkAdventure(tokenID.id || tokenID);
-    if (response.confirmations) {
-      //got confirmed
-      const today = new Date();
-      let tomorrow = new Date();
-      tomorrow.setDate(today.getDate() + 1);
-      setElement({ ...element, nextAdventure: tomorrow });
-    }
+    try {
+      const response = await embarkAdventure(tokenID.id || tokenID);
+      if (response.confirmations) {
+        //got confirmed
+        const today = new Date();
+        let tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+        setElement({ ...element, nextAdventure: tomorrow });
+      }
+    } catch (e) {}
   };
   const handleLevelUp = async (e) => {
     e.preventDefault();
@@ -75,27 +76,28 @@ const Hero = ({ tokenID, animation }) => {
     const fetHeroData = async () => {
       try {
         const heroData = await pullHeroesData(tokenID.id || tokenID);
-        setElement(heroData);
-      } catch (e) {
-        // console.log("fetch hero data error", e);
-      }
-    };
-    const fetchGold = async () => {
-      try {
         const goldBalance = await getGoldBalance(tokenID.id || tokenID);
         const goldClaimable = await getClaimableGold(tokenID.id || tokenID);
+        setElement(heroData);
         setGold((prevState) => ({
           ...prevState,
           goldBalance: parseFloat(goldBalance),
           goldClaimable: parseFloat(goldClaimable),
         }));
+        setHeroes((prevState) => ({
+          ...prevState,
+          [tokenID.id]: {
+            ...heroData,
+            goldBalance: parseFloat(goldBalance),
+            goldClaimable: parseFloat(goldClaimable),
+          },
+        }));
       } catch (e) {
-        // console.log("fetch gold data error", e);
+        // console.log("fetch hero data error", e);
       }
     };
     if (tokenID.id || tokenID) {
       fetHeroData();
-      fetchGold();
     }
     return () => {};
   }, [tokenID, contract]);

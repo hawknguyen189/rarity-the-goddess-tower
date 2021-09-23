@@ -2,7 +2,7 @@ import React, { createContext, useState, useMemo } from "react";
 export const CharacterContext = createContext();
 
 const CharacterContextProvider = ({ children }) => {
-  const [heroes, setHeroes] = useState([]);
+  const [heroes, setHeroes] = useState({});
   const [tokenID, setTokenID] = useState([]);
   const contextValues = useMemo(
     () => ({

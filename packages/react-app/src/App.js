@@ -17,8 +17,7 @@ import { setupContracts } from "./components/utils/setupContracts";
 
 function App() {
   const [refresh, setRefresh] = useState(false);
-  const { heroes, setHeroes, tokenID, setTokenID } =
-    useContext(CharacterContext);
+  const { setTokenID } = useContext(CharacterContext);
   const { contract, setContract } = useContext(ContractContext);
 
   const initiateRarityData = async () => {

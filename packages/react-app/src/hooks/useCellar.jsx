@@ -33,7 +33,7 @@ const useCellar = () => {
             };
             return response;
           } catch (e) {
-            console.log("error", e);
+            // console.log("error scout", e);
             // return onError(e);
           }
         };

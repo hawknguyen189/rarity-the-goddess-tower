@@ -62,7 +62,34 @@ const Invetory = () => {
           role="tabpanel"
           aria-labelledby="material-tab"
         >
-          <h1 className="display-3">Coming Soon</h1>
+          <table className="table">
+            <tbody>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div
           className="tab-pane fade"

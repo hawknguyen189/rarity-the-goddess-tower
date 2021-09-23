@@ -9,7 +9,7 @@ import HeroController from "./HeroController";
 import useDungeon from "../../hooks/useCellar";
 
 const Heroes = () => {
-  const { tokenID, setTokenID } = useContext(CharacterContext);
+  const { tokenID, setTokenID, heroes } = useContext(CharacterContext);
   const { contract } = useContext(ContractContext);
   const {
     approve,
@@ -132,88 +132,96 @@ const Heroes = () => {
     setUpdating(false);
   };
 
-  const filterAll = useCallback(async () => {
-    if (!contract?.accounts) return;
-    setUpdating(true);
-    const allowed = await allowance(contract.accounts, RARITYWORKER_CONTRACT);
-    const filteredAdv = [];
-    const filteredLevelUp = [];
-    const filteredClaimGold = [];
-    const filteredCellar = [];
-    const indexesAdv = [];
-    const indexesLevelUp = [];
-    const indexesClaimGold = [];
-    const indexesCellar = [];
-    for (let i = 0; i < tokenID.length; i++) {
-      try {
-        const summonerData = await pullHeroesData(tokenID[i].id || tokenID[i]);
-        const goldData = await getClaimableGold(tokenID[i].id || tokenID[i]);
-        const cellarData = await scoutCellar(tokenID[i].id || tokenID[i]);
-        if (summonerData) {
-          // build adventrure list
-          const nextAdvTimestamp = summonerData.nextAdventure;
-          if (nextAdvTimestamp.getTime() < new Date().getTime()) {
-            filteredAdv.push(tokenID[i].id || tokenID[i]);
-            indexesAdv.push(i);
-          }
-          //build level up list
-          const xpRequired = parseInt(summonerData.xpRequired);
-          if (xpRequired === 0) {
-            filteredLevelUp.push(tokenID[i].id || tokenID[i]);
-            indexesLevelUp.push(i);
-          }
+  const filterAll = useCallback(
+    async (heroes) => {
+      if (!contract?.accounts) return;
+      setUpdating(true);
+      const allowed = await allowance(contract.accounts, RARITYWORKER_CONTRACT);
+      const filteredAdv = [];
+      const filteredLevelUp = [];
+      const filteredClaimGold = [];
+      const filteredCellar = [];
+      const indexesAdv = [];
+      const indexesLevelUp = [];
+      const indexesClaimGold = [];
+      const indexesCellar = [];
+      for (let i = 0; i < tokenID.length; i++) {
+        if (heroes[tokenID[i].id]?.tokenID) {
+          //only run when all data are ready
+          try {
+            const summonerData = heroes[tokenID[i].id];
+            const goldData = heroes[tokenID[i].id].goldClaimable;
+            const cellarData = await scoutCellar(tokenID[i].id || tokenID[i]);
+            if (summonerData) {
+              // build adventrure list
+              const nextAdvTimestamp = summonerData.nextAdventure;
+              if (nextAdvTimestamp.getTime() < new Date().getTime()) {
+                filteredAdv.push(tokenID[i].id || tokenID[i]);
+                indexesAdv.push(i);
+              }
+              //build level up list
+              const xpRequired = parseInt(summonerData.xpRequired);
+              if (xpRequired === 0) {
+                filteredLevelUp.push(tokenID[i].id || tokenID[i]);
+                indexesLevelUp.push(i);
+              }
+            }
+            if (goldData) {
+              //build claimable gold list
+              const claimableGold = parseFloat(goldData);
+              if (claimableGold) {
+                filteredClaimGold.push(tokenID[i].id || tokenID[i]);
+                indexesClaimGold.push(i);
+              }
+            }
+            if (cellarData) {
+              //build cellar dungeon ready list
+              // console.log("cellar data", cellarData);
+              if (
+                cellarData.nextDungeonTime.toString() * 1000 < Date.now() &&
+                cellarData.materialReward > 0
+              ) {
+                filteredCellar.push(tokenID[i].id || tokenID[i]);
+                indexesCellar.push(i);
+              }
+            }
+          } catch (e) {}
         }
-        if (goldData) {
-          //build claimable gold list
-          const claimableGold = parseFloat(goldData);
-          if (claimableGold) {
-            filteredClaimGold.push(tokenID[i].id || tokenID[i]);
-            indexesClaimGold.push(i);
-          }
-        }
-        if (cellarData) {
-          //build cellar dungeon ready list
-          // console.log("cellar data", cellarData);
-          if (
-            cellarData.nextDungeonTime.toString() * 1000 < Date.now() &&
-            cellarData.materialReward > 0
-          ) {
-            filteredCellar.push(tokenID[i].id || tokenID[i]);
-            indexesCellar.push(i);
-          }
-        }
-      } catch (e) {}
-    }
-    setListAdventure({
-      available: filteredAdv.length > 0,
-      summoners: [...filteredAdv],
-      summonersIndexes: [...indexesAdv],
-    });
-    setListGold({
-      available: filteredClaimGold.length > 0,
-      summoners: [...filteredClaimGold],
-      summonersIndexes: [...indexesClaimGold],
-    });
-    setListLevel({
-      available: filteredLevelUp.length > 0,
-      summoners: [...filteredLevelUp],
-      summonersIndexes: [...indexesLevelUp],
-    });
-    setListDungeon({
-      available: filteredCellar.length > 0,
-      summoners: [...filteredCellar],
-      summonersIndexes: [...indexesCellar],
-    });
-    setApproval(allowed);
-    setUpdating(false);
-  }, [tokenID, contract]);
+      }
+      setListAdventure({
+        available: filteredAdv.length > 0,
+        summoners: [...filteredAdv],
+        summonersIndexes: [...indexesAdv],
+      });
+      setListGold({
+        available: filteredClaimGold.length > 0,
+        summoners: [...filteredClaimGold],
+        summonersIndexes: [...indexesClaimGold],
+      });
+      setListLevel({
+        available: filteredLevelUp.length > 0,
+        summoners: [...filteredLevelUp],
+        summonersIndexes: [...indexesLevelUp],
+      });
+      setListDungeon({
+        available: filteredCellar.length > 0,
+        summoners: [...filteredCellar],
+        summonersIndexes: [...indexesCellar],
+      });
+      setApproval(allowed);
+      setUpdating(false);
+    },
+    [tokenID, contract]
+  );
 
   useEffect(() => {
     //trigger filter func
-    if (!contract?.accounts) return;
-    filterAll();
+    if (contract?.accounts && Object.keys(heroes).length === tokenID.length) {
+      //only call filter when finishing pulling all data
+      filterAll(heroes);
+    }
     return () => {};
-  }, [filterAll, contract, tokenID]);
+  }, [filterAll, contract, heroes]);
 
   useEffect(() => {
     let count = 0;

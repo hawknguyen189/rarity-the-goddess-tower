@@ -14,7 +14,7 @@ const HeroCave = () => {
       <p className="h1 text-uppercase fw-bold text-white py-3"> Hero Cave</p>
       <div className="row">
         <div className="col-sm-6 container">
-          <Hero tokenID={heroID} animation={true}></Hero>
+          <Hero tokenID={{ id: heroID }} animation={true}></Hero>
         </div>
         <Invetory></Invetory>
       </div>
