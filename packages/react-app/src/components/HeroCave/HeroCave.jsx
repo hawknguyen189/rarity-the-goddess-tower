@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useRouter } from "../../hooks/useRouter";
 import Hero from "../Heroes/Hero";
 import Attribute from "./Attribute";
-import Invetory from "../Inventory/Invetory";
+import Invetory from "../Inventory/Inventory";
 import useRarity from "../../hooks/useRarity";
 
 const HeroCave = () => {

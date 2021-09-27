@@ -1,4 +1,5 @@
 import React from "react";
+import Crafting from "./SubInventory/Crafting";
 
 const Invetory = () => {
   return (
@@ -54,7 +55,7 @@ const Invetory = () => {
           role="tabpanel"
           aria-labelledby="gears-tab"
         >
-          <h1 className="display-3">Coming Soon</h1>
+          <Crafting></Crafting>
         </div>
         <div
           className="tab-pane fade"
@@ -62,34 +63,7 @@ const Invetory = () => {
           role="tabpanel"
           aria-labelledby="material-tab"
         >
-          <table className="table">
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
+          <Crafting></Crafting>
         </div>
         <div
           className="tab-pane fade"
