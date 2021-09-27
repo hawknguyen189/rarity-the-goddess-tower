@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useRouter } from "../../hooks/useRouter";
 import Hero from "../Heroes/Hero";
-import Attribute from "./Attribute";
+import Attribute from "./SubHeroCave/Attribute";
+import Character from "./SubHeroCave/Character";
 import Invetory from "../Inventory/Inventory";
 import useRarity from "../../hooks/useRarity";
 
@@ -23,6 +24,20 @@ const HeroCave = () => {
           <li className="nav-item" role="presentation">
             <button
               className="nav-link active fw-bolder text-white bg-transparent"
+              id="character-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#character"
+              type="button"
+              role="tab"
+              aria-controls="character"
+              aria-selected="true"
+            >
+              Character
+            </button>
+          </li>
+          <li className="nav-item" role="presentation">
+            <button
+              className="nav-link fw-bolder text-white bg-transparent"
               id="attribute-tab"
               data-bs-toggle="tab"
               data-bs-target="#attribute"
@@ -66,6 +81,14 @@ const HeroCave = () => {
         <div className="tab-content" id="myTabContent">
           <div
             className="tab-pane fade show active"
+            id="character"
+            role="tabpanel"
+            aria-labelledby="character-tab"
+          >
+            <Character heroID={heroID}></Character>
+          </div>
+          <div
+            className="tab-pane fade show"
             id="attribute"
             role="tabpanel"
             aria-labelledby="attribute-tab"

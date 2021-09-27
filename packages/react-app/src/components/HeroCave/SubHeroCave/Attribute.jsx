@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import useAttribute from "../../hooks/useAttribute";
-import { calcAPCost } from "../constants";
+import useAttribute from "../../../hooks/useAttribute";
+import { calcAPCost } from "../../constants";
 
 // import { ContractContext } from "../Context/ContractContext";
 

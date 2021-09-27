@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { useContext } from "react";
 import { ContractContext } from "../components/Context/ContractContext";
-import toClassName from "../components/constants/classes";
+import toClassName from "../components/constants/ToClass";
 
 const useRarity = () => {
   const { contract } = useContext(ContractContext);
