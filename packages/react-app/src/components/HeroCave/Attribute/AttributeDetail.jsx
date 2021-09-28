@@ -232,9 +232,9 @@ const AttributeDetail = () => {
           </p>
           <br />
           <p>
-            It mostly affects on raising the successfull rate of Druid's
-            Persuade skill (converting 1 animal/treant enemy into ally) or Evil
-            Cleric's Turn Undead skill (control undead type enemy)
+            It helps increase the successfull rate of Druid's Persuade skill
+            (converting 1 animal/treant enemy into ally) or Evil Cleric's Turn
+            Undead skill (control undead type enemy)
           </p>
         </div>
       </div>
