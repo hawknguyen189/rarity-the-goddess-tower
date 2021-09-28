@@ -9,7 +9,7 @@ import useRarity from "../../hooks/useRarity";
 
 const HeroCave = () => {
   const router = useRouter();
-  const [heroID] = useState(router.query.tokenID);
+  const [heroID, setHeroID] = useState(router.query.tokenID);
   return (
     <div className="container py-3">
       <p className="h1 text-uppercase fw-bold text-white py-3"> Hero Cave</p>

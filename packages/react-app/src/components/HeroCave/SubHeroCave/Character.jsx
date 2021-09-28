@@ -7,7 +7,7 @@ const Character = ({ heroID }) => {
   return (
     <div>
       {heroes[heroID] && (
-        <div className="character-section py-3">
+        <div className="character-section py-5">
           <p style={{ whiteSpace: "pre-line" }}>
             {Classes[heroes[heroID].class.toLowerCase()].intro}
           </p>

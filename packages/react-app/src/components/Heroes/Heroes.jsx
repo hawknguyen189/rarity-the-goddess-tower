@@ -11,16 +11,9 @@ import useDungeon from "../../hooks/useCellar";
 const Heroes = () => {
   const { tokenID, setTokenID, heroes } = useContext(CharacterContext);
   const { contract } = useContext(ContractContext);
-  const {
-    approve,
-    allowance,
-    multiAdventure,
-    multiLevelUp,
-    multiClaimGold,
-    pullHeroesData,
-  } = useRarity();
-  const { getClaimableGold } = useGold();
-  const { scoutCellar, adventureCellar, singleCellar } = useDungeon();
+  const { approve, allowance, multiAdventure, multiLevelUp, multiClaimGold } =
+    useRarity();
+  const { scoutCellar, adventureCellar } = useDungeon();
   const [updating, setUpdating] = useState(false);
   const [approval, setApproval] = useState(false);
   const [listAdventure, setListAdventure] = useState({

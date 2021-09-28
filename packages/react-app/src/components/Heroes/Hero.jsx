@@ -7,17 +7,7 @@ import { CharacterContext } from "../Context/CharacterContext";
 
 const Hero = ({ tokenID, animation }) => {
   const { contract } = useContext(ContractContext);
-  const { setHeroes } = useContext(CharacterContext);
-
-  const [element, setElement] = useState({
-    tokenID: null,
-    class: null,
-    level: null,
-    xp: null,
-    xpRequired: null,
-    nextAdventure: null,
-  });
-  const [gold, setGold] = useState({ goldBalance: null, goldClaimable: null });
+  const { heroes, setHeroes } = useContext(CharacterContext);
   //all functions related to rarity address
   const { embarkAdventure, pullHeroesData, levelUp, checkXpRequired } =
     useRarity();
@@ -33,28 +23,36 @@ const Hero = ({ tokenID, animation }) => {
         const today = new Date();
         let tomorrow = new Date();
         tomorrow.setDate(today.getDate() + 1);
-        setElement({ ...element, nextAdventure: tomorrow });
+        setHeroes((prevState) => ({
+          ...prevState,
+          [tokenID.id]: {
+            ...prevState[tokenID.id],
+            nextAdventure: tomorrow,
+          },
+        }));
       }
     } catch (e) {}
   };
   const handleLevelUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await levelUp(element.tokenID);
-      const newXpRequired = await checkXpRequired(parseInt(element.level) + 1);
-      if (response) {
-        setElement((prevState) => ({
+      const response = await levelUp(tokenID.id);
+      const newXpRequired = await checkXpRequired(
+        parseInt(heroes[tokenID.id]?.level) + 1
+      );
+      const goldClaimable = await getClaimableGold(tokenID.id || tokenID);
+      if (response && newXpRequired && goldClaimable) {
+        setHeroes((prevState) => ({
           ...prevState,
-          level: parseInt(prevState.level) + 1,
-          xp: 0,
-          xpRequired: newXpRequired,
+          [tokenID.id]: {
+            ...prevState[tokenID.id],
+            level: parseInt(prevState[tokenID.id].level) + 1,
+            xp: 0,
+            xpRequired: newXpRequired,
+            goldClaimable: parseFloat(goldClaimable),
+          },
         }));
       }
-      const goldClaimable = await getClaimableGold(tokenID.id || tokenID);
-      setGold((prevState) => ({
-        ...prevState,
-        goldClaimable: parseFloat(goldClaimable),
-      }));
     } catch (e) {
       console.log("level up error", e);
     }
@@ -64,10 +62,13 @@ const Hero = ({ tokenID, animation }) => {
     const response = await claimGold(tokenID.id || tokenID);
     if (response) {
       const goldBalance = await getGoldBalance(tokenID.id || tokenID);
-      setGold((prevState) => ({
+      setHeroes((prevState) => ({
         ...prevState,
-        goldBalance: goldBalance,
-        goldClaimable: 0,
+        [tokenID.id]: {
+          ...prevState[tokenID.id],
+          goldBalance: parseFloat(goldBalance),
+          goldClaimable: 0,
+        },
       }));
     }
   };
@@ -78,12 +79,6 @@ const Hero = ({ tokenID, animation }) => {
         const heroData = await pullHeroesData(tokenID.id || tokenID);
         const goldBalance = await getGoldBalance(tokenID.id || tokenID);
         const goldClaimable = await getClaimableGold(tokenID.id || tokenID);
-        setElement(heroData);
-        setGold((prevState) => ({
-          ...prevState,
-          goldBalance: parseFloat(goldBalance),
-          goldClaimable: parseFloat(goldClaimable),
-        }));
         setHeroes((prevState) => ({
           ...prevState,
           [tokenID.id]: {
@@ -100,42 +95,45 @@ const Hero = ({ tokenID, animation }) => {
       fetHeroData();
     }
     return () => {};
-  }, [tokenID, contract]);
+  }, [contract]);
 
   return (
     <div className="row">
       <div className="col-sm-3">
-        <Link className="link-primary" to={`/herocave/${element?.tokenID}`}>
-          {element?.class ? (
+        {heroes[tokenID.id]?.class ? (
+          <Link
+            className="link-primary"
+            to={`/herocave/${heroes[tokenID.id]?.tokenID}`}
+          >
             <img //gif version if in hero cave
               className="img-thumbnail bg-transparent border-0"
               src={require(`../../media/${
                 animation ? "recruit" : "heroes"
-              }-icon/${element?.class?.toLowerCase()}.${
+              }-icon/${heroes[tokenID.id]?.class?.toLowerCase()}.${
                 animation ? "gif" : "png"
               }`)}
-              alt={element.class}
+              alt={heroes[tokenID.id].class}
             />
-          ) : (
-            //avatar if in main page
-            <div className="spinner-border text-info" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          )}
-        </Link>
+          </Link>
+        ) : (
+          //avatar if in main page
+          <div className="spinner-border text-info" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        )}
       </div>
       <div className="col-sm-9">
-        {element?.tokenID ? (
+        {heroes[tokenID.id]?.tokenID ? (
           <div className="hero-container">
             <p>
-              <span className="fw-bolder">{element.class} </span>
+              <span className="fw-bolder">{heroes[tokenID.id].class} </span>
               <span className="fw-italic text-white-50">
-                Level {element.level}
+                Level {heroes[tokenID.id].level}
               </span>
             </p>
             <p className="fw-bold text-white-50">
-              {element.tokenID} | XP: {element.xp}{" "}
-              {element.xpRequired === "0" ? (
+              {heroes[tokenID.id].tokenID} | XP: {heroes[tokenID.id].xp}{" "}
+              {heroes[tokenID.id].xpRequired === "0" ? (
                 <button
                   className="btn btn-danger btn-sm"
                   onClick={handleLevelUp}
@@ -144,14 +142,14 @@ const Hero = ({ tokenID, animation }) => {
                   Level Up
                 </button>
               ) : (
-                `(${element.xpRequired} remaining)`
+                `(${heroes[tokenID.id].xpRequired} remaining)`
               )}
             </p>
             <div className="gold-section row">
               <p className="text-white-50 col-sm-8">
-                Gold Balance: {gold.goldBalance}
+                Gold Balance: {heroes[tokenID.id].goldBalance}
               </p>
-              {gold.goldClaimable ? (
+              {heroes[tokenID.id].goldClaimable ? (
                 <button
                   className="btn btn-light col-sm-4 btn-sm"
                   onClick={handleClaim}
@@ -166,19 +164,22 @@ const Hero = ({ tokenID, animation }) => {
             <button
               className="link-light btn btn-link"
               disabled={
-                element.nextAdventure?.getTime() >= new Date().getTime()
+                heroes[tokenID.id].nextAdventure?.getTime() >=
+                new Date().getTime()
               }
               onClick={(e) => {
                 e.preventDefault();
                 handleAdventure();
               }}
             >
-              {element.nextAdventure?.getTime() >= new Date().getTime() ? (
+              {heroes[tokenID.id].nextAdventure?.getTime() >=
+              new Date().getTime() ? (
                 <p>
                   Next adventure in{" "}
                   {Math.floor(
                     Math.abs(
-                      element.nextAdventure?.getTime() - new Date().getTime()
+                      heroes[tokenID.id].nextAdventure?.getTime() -
+                        new Date().getTime()
                     ) /
                       1000 /
                       3600

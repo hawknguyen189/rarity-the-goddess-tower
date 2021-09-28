@@ -207,7 +207,7 @@ const Attribute = ({ heroID }) => {
             <p className="fw-italic text-white-50 pt-2 text-center">
               {tempAP === 0
                 ? "A hero receives only 1 additional point every 4 levels so be careful with your build."
-                : "You need to spend all 32 starting points to begin the raiding tower part"}
+                : "You need to spend all 32 starting points to begin raiding the Goddess Tower"}
             </p>
           </div>
         </div>
