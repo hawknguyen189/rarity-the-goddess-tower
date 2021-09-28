@@ -50,8 +50,15 @@ const useAttribute = () => {
             charisma: attr.charisma === 0 ? 8 : attr.charisma,
           };
         } catch (e) {
-          const response = await retryToCompletion({ wait: 3500, retries: 5 });
-          data = response;
+          const attr = await retryToCompletion({ wait: 3500, retries: 10 });
+          data = {
+            strength: attr.strength === 0 ? 8 : attr.strength,
+            dexterity: attr.dexterity === 0 ? 8 : attr.dexterity,
+            constitution: attr.constitution === 0 ? 8 : attr.constitution,
+            intelligence: attr.intelligence === 0 ? 8 : attr.intelligence,
+            wisdom: attr.wisdom === 0 ? 8 : attr.wisdom,
+            charisma: attr.charisma === 0 ? 8 : attr.charisma,
+          };
         }
       }
       return data;

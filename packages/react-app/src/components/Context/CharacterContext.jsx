@@ -3,6 +3,8 @@ export const CharacterContext = createContext();
 
 const CharacterContextProvider = ({ children }) => {
   const [heroes, setHeroes] = useState({});
+  const [primaryStats, setPrimaryStats] = useState({});
+  const [secondary, setSecondaryStats] = useState({});
   const [tokenID, setTokenID] = useState([]);
   const contextValues = useMemo(
     () => ({
@@ -10,8 +12,12 @@ const CharacterContextProvider = ({ children }) => {
       setHeroes,
       tokenID,
       setTokenID,
+      primaryStats,
+      setPrimaryStats,
+      secondary,
+      setSecondaryStats,
     }),
-    [heroes, tokenID]
+    [heroes, tokenID, primaryStats, secondary]
   );
   return (
     <CharacterContext.Provider value={contextValues}>

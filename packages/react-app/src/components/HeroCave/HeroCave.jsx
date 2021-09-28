@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useRouter } from "../../hooks/useRouter";
 import Hero from "../Heroes/Hero";
-import Attribute from "./SubHeroCave/Attribute";
-import Character from "./SubHeroCave/Character";
+import Attribute from "./Attribute/Attribute";
+import Character from "./Character/Character";
 import Invetory from "../Inventory/Inventory";
 import useRarity from "../../hooks/useRarity";
 
@@ -23,7 +23,7 @@ const HeroCave = () => {
         <ul className="nav nav-tabs nav-fill" id="myTab" role="tablist">
           <li className="nav-item" role="presentation">
             <button
-              className="nav-link active fw-bolder text-white bg-transparent"
+              className="nav-link fw-bolder text-white bg-transparent"
               id="character-tab"
               data-bs-toggle="tab"
               data-bs-target="#character"
@@ -37,7 +37,7 @@ const HeroCave = () => {
           </li>
           <li className="nav-item" role="presentation">
             <button
-              className="nav-link fw-bolder text-white bg-transparent"
+              className="nav-link fw-bolder active text-white bg-transparent"
               id="attribute-tab"
               data-bs-toggle="tab"
               data-bs-target="#attribute"
@@ -80,7 +80,7 @@ const HeroCave = () => {
         </ul>
         <div className="tab-content" id="myTabContent">
           <div
-            className="tab-pane fade show active"
+            className="tab-pane fade show"
             id="character"
             role="tabpanel"
             aria-labelledby="character-tab"
@@ -88,7 +88,7 @@ const HeroCave = () => {
             <Character heroID={heroID}></Character>
           </div>
           <div
-            className="tab-pane fade show"
+            className="tab-pane fade show active"
             id="attribute"
             role="tabpanel"
             aria-labelledby="attribute-tab"
