@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Classes from "../../constants/Classes.js";
+import Classes from "../../constants/ClassLore";
 import { CharacterContext } from "../../Context/CharacterContext";
 
 const Character = ({ heroID }) => {
