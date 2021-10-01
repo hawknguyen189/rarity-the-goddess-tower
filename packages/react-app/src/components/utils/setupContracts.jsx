@@ -1,13 +1,11 @@
 import { Web3Provider } from "@ethersproject/providers";
-import { ethers } from "ethers";
 import { Contract } from "@ethersproject/contracts";
 import {
   FANTOM_NETWORK,
   FANTOM_ID,
   RARITY_ADDRESS,
   ATTRIBUTES_CONTRACT,
-  RARITY_ADDRESS_NAMES,
-  MULTIADVENTURE_CONTRACT,
+  // RARITY_ADDRESS_NAMES,
   RARITYWORKER_CONTRACT,
   GOLD_CONTRACTS,
   DUNGEONS,
@@ -16,7 +14,6 @@ import {
 import RARITY_ABI from "../constants/abis/rarity.json";
 import GOLD_ABI from "../constants/abis/gold.json";
 import ATTRIBUTES_ABI from "../constants/abis/attributes.json";
-import MULTIADVENTURE_ABI from "../constants/abis/multiadventure.json";
 import RARITYWORKER_ABI from "../constants/abis/rarityworker.json";
 import CELLAR_ABI from "../constants/abis/cellar.json";
 

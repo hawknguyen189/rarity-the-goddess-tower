@@ -131,8 +131,8 @@ const PrimaryStats = ({ heroID }) => {
           {Object.keys(stats).map((e, index) => {
             return (
               <div className="row" key={index}>
-                <p className="col-sm-5 fw-bold text-capitalize">{e}</p>
-                <div className="col-sm-5 row">
+                <p className="col-sm-6 fw-bold text-capitalize">{e}</p>
+                <div className="col-sm-3 row">
                   <button
                     className="btn btn-outline-danger col-sm btn-sm border-0"
                     onClick={(event) => {
@@ -154,7 +154,7 @@ const PrimaryStats = ({ heroID }) => {
                     <i className="bi bi-plus-circle fs-5"></i>
                   </button>
                 </div>
-                <p className="col-sm-2 text-end">{tempStats[e]}</p>
+                <p className="col-sm-3 text-end">{tempStats[e]}</p>
               </div>
             );
           })}
