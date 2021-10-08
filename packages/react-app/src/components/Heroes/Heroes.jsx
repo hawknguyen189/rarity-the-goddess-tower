@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import { CharacterContext } from "../Context/CharacterContext";
 import { ContractContext } from "../Context/ContractContext.jsx";
 import useRarity from "../../hooks/useRarity";
-import useGold from "../../hooks/useGold";
+// import useGold from "../../hooks/useGold";
 import { RARITYWORKER_CONTRACT } from "../utils/config";
 import Hero from "./Hero";
 import HeroController from "./HeroController";
@@ -154,7 +154,7 @@ const Heroes = () => {
               }
               //build level up list
               const xpRequired = parseInt(summonerData.xpRequired);
-              if (xpRequired === 0) {
+              if (xpRequired <= 0) {
                 filteredLevelUp.push(tokenID[i].id || tokenID[i]);
                 indexesLevelUp.push(i);
               }

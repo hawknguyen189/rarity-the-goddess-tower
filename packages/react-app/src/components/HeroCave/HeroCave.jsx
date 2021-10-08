@@ -6,12 +6,14 @@ import Attribute from "./Attribute/Attribute";
 import Character from "./Character/Character";
 import Invetory from "../Inventory/Inventory";
 import useRarity from "../../hooks/useRarity";
+import Foobar from "../Foobar";
 
 const HeroCave = () => {
   const router = useRouter();
   const [heroID, setHeroID] = useState(router.query.tokenID);
   return (
     <div className="container py-3">
+      <Foobar></Foobar>
       <p className="h1 text-uppercase fw-bold text-white py-3"> Hero Cave</p>
       <div className="row">
         <div className="col-sm-6 container">
